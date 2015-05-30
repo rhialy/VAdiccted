@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
+using UnityEngine.UI;
 
 public class Main : MonoBehaviour {
 
@@ -22,6 +23,11 @@ public class Main : MonoBehaviour {
 	// Player
 	public GameObject Player;
 
+	// GameObjects for displaying the text
+	public GameObject TextLSD;
+	public GameObject TextHeroine;
+	public GameObject TextEcstasty;
+
 	// Booleans for Drugs
 	protected bool isLSD;
 	protected bool isHeroine;
@@ -38,7 +44,6 @@ public class Main : MonoBehaviour {
 	// Variables for stopping the Update of the main class after Setting Phase
 	private bool simulationStarted;
 
-
 	// Use this for initialization
 	void Start () {
 		simulationStarted = true;
@@ -50,33 +55,43 @@ public class Main : MonoBehaviour {
 		// Diese Bedingung beendet jegliche Raycasts nachdem die Parameter alle festgelegt wurden
 		// und die Simulation beginnt, da Raycasts viel Leistung auffressen
 		if (simulationStarted == true) {
+
 			Vector3 fwd = transform.TransformDirection (Vector3.right);
+			RaycastHit isHitDrug;
+			
+			if (Physics.Raycast (Player.transform.position, fwd, out isHitDrug, 1)) {
 
-			if (Input.GetKey ("e")) {
+				print ("Ray wurde gecastet");
 
-				print ("es wurde e gedrückt");
-				RaycastHit isHit;
+				// Vergleicht den Namen des mit dem Raycast getroffenen Objekts mit dem Namen
+				// der Drogen und setzte die jeweiligen Bools auf true. (Falls "e" gedrückt ist)
+				// TODO: den Text einblenden der bei der jeweiligen Droge angezeigt werden soll
 
-				if (Physics.Raycast (Player.transform.position, fwd, out isHit, 10)) {
-
-					print ("Ray wurde gecastet");
-
-					// Vergleicht den Namen des mit dem Raycast getroffenen Objekts mit dem Namen
-					// der Drogen und setzte die jeweiligen Bools auf true. (Falls "e" gedrückt ist)
-					// TODO: den Text einblenden der bei der jeweiligen Droge angezeigt werden soll
-
-					if (isHit.collider.gameObject.name == LSD.name) {
-						print ("Collider von LSD wurde getroffen");
+				if (isHitDrug.collider.gameObject.name == LSD.name) {
+					print ("Collider von LSD wurde getroffen");
+					TextLSD.SetActive(true);
+					if(Input.GetKey("e")){
 						isLSD = true;
-					} else if (isHit.collider.gameObject.name == Heroine.name) {
-						print ("Collider von HEROIN wurde getroffen");
+					}
+				} else if (isHitDrug.collider.gameObject.name == Heroine.name) {
+					print ("Collider von HEROIN wurde getroffen");
+					TextHeroine.SetActive(true);
+					if(Input.GetKey("e")){
 						isHeroine = true;
-					} else if (isHit.collider.gameObject.name == Ecstasy.name) {
-						print ("Collider von ECSTASY wurde getroffen");
+					}
+				} else if (isHitDrug.collider.gameObject.name == Ecstasy.name) {
+					print ("Collider von ECSTASY wurde getroffen");
+					TextEcstasty.SetActive(true);
+					if(Input.GetKey("e")){
 						isEcstasy = true;
 					}
 				}
+			} else  {
+				TextLSD.SetActive(false);
+				TextEcstasty.SetActive(false);
+				TextHeroine.SetActive(false);
 			}
+		
 
 			// Zweites if-conditional, dass nur gecheckt wird wenn schon eine Droge ausgewählt wurde
 			// damit nicht die ganze Zeit zwei Rays gecastet werden -> Leistungssteigerung
