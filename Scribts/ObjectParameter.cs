@@ -3,10 +3,18 @@ using System.Collections;
 
 public class ObjectParameter : Main {
 
+	/*********HideParentVariablesInInspector*************/
+	// Wir reinitialisieren jetzt alle Variablen der Eltern
+	// Klasse um sie im Inspector zu verstecken
+	// -> Bessere Übersichtlichkeit
+	// TODO: HideInInspector Attribut funktioniert nicht um ein Feld
+	// ein zweites mal zu serializen. Andere Methode?
+
+	
 	/*********************************************************************|
 	| Dieses Script dient als "Handler" für alle kleineren Scripts die    |
 	| mit der Änderung von Objekten zu tun haben. Dies dient nur der      |
-	| Übersicht, da wenn alle Funktionen für allle sich verändernden      |
+	| Übersicht, da wenn alle Funktionen für alle sich verändernden       |
 	| Objekte mit den jeweiligen public variables in diesem Script wären  |
 	| würde die Übersichtlichkeit stark darunter leiden.				  |
 	| Wichtig ist, dass alle diese Scripts Child Klassen dieser Klasse	  |

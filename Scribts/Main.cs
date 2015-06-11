@@ -5,15 +5,15 @@ using UnityEngine.UI;
 public class Main : MonoBehaviour {
 
 	// GameObjects for Drugs
-	public GameObject LSD;
-	public GameObject Heroine;
-	public GameObject Ecstasy;
+	[SerializeField] protected GameObject LSD;
+	[SerializeField] protected GameObject Heroine;
+	[SerializeField] protected GameObject Ecstasy;
 
 	// GameObjects for Question Parameters [question 1 && 2] [testing]
-	public GameObject bodyGoodPositive;
-	public GameObject bodyGoodNegative;
-	public GameObject soulGoodPositive;
-	public GameObject soulGoodNegative;
+	[SerializeField] protected GameObject bodyGoodPositive;
+	[SerializeField] protected GameObject bodyGoodNegative;
+	[SerializeField] protected GameObject soulGoodPositive;
+	[SerializeField] protected GameObject soulGoodNegative;
 
 	// GameObjects for Question Parameters [question 3] [testing]
 	public GameObject woundUp; // Etwas Aufgedrehtes
@@ -87,6 +87,7 @@ public class Main : MonoBehaviour {
 					}
 				}
 			} else  {
+				// Text nichtmehr anzeigen, wenn Player Raycast berührt Collider von Droge nicht mehr
 				TextLSD.SetActive(false);
 				TextEcstasty.SetActive(false);
 				TextHeroine.SetActive(false);
@@ -96,6 +97,11 @@ public class Main : MonoBehaviour {
 			// Zweites if-conditional, dass nur gecheckt wird wenn schon eine Droge ausgewählt wurde
 			// damit nicht die ganze Zeit zwei Rays gecastet werden -> Leistungssteigerung
 			if (isLSD == true || isHeroine == true || isEcstasy == true) {
+
+				// Text nicht mehr anzeigen, weil Droge schon aktiviert
+				TextLSD.SetActive(false);
+				TextEcstasty.SetActive(false);
+				TextHeroine.SetActive(false);
 
 				RaycastHit isHit;
 
