@@ -4,13 +4,17 @@ using System.Collections;
 public class LightParameter : Main {
 	public Light Lt;
 	private int counter;
+	private int counter2;
 	private int geschwindigkeit;
+	private int delay;
 	//Speichervariablen für zwei Farben ->fließender Übergang
 	private Color c1;
 	private Color c2;
 	// Use this for initialization
 	void Start () {
 		counter = 0;
+		counter2 = 0;
+		delay = 8;
 		c1 = Color.white;
 		c2 = Color.white;
 		geschwindigkeit = 240;
@@ -18,9 +22,12 @@ public class LightParameter : Main {
 	
 	// Update is called once per frame
 	void Update () {
-		Helligkeit (240,true,0,100);
-		Farbe (240,true,0,100);
-		Schwanken ();
+
+		OnAndOf ();
+		//	Helligkeit (240, true, 0, 100);
+		//	Farbe (240, true, 0, 100);
+		
+
 
 	
 	}
@@ -80,7 +87,7 @@ public class LightParameter : Main {
 	
 	//Farbe
 	void Farbe( int geschwindigkeit, bool Panbhängigkeit, float min,float max) {
-		counter = counter + 1;
+		//counter=counter +1;
 
 		//speichervariable für Zufallszahl
 		float random;
@@ -117,9 +124,27 @@ public class LightParameter : Main {
 		Lt.color=Color.Lerp (c1,c2,t);
 	}
 
-	void Schwanken(){
+	bool OnAndOf(){
+		counter2 = counter2 + 1;
 
-		Lt.spotAngle = Random.Range(10, 90);
+		if (counter2==delay) {
+			counter2=0;
+			if (Lt.color != Color.black) {
+				Lt.color = Color.black;
+				Lt.intensity = 0.0F;
+				print (1);
+				delay = Random.Range (4, 20);
+				return true;
+			}
+			else if(counter2>17){counter2=0;}
+			else {
+				Lt.intensity = 8.0F;
+				Lt.color = Color.white;
+				print (2);
+				return false;
+			}
+		}
+		return false;
 
 	}
 
