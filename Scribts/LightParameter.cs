@@ -10,6 +10,8 @@ public class LightParameter : Main {
 	//Speichervariablen für zwei Farben ->fließender Übergang
 	private Color c1;
 	private Color c2;
+
+
 	// Use this for initialization
 	void Start () {
 		counter = 0;
@@ -18,14 +20,17 @@ public class LightParameter : Main {
 		c1 = Color.white;
 		c2 = Color.white;
 		geschwindigkeit = 240;
+
+
 	}
 	
 	// Update is called once per frame
 	void Update () {
 
 		OnAndOf ();
-		//	Helligkeit (240, true, 0, 100);
-		//	Farbe (240, true, 0, 100);
+		//Helligkeit (240, true, 0, 100);
+		//Farbe (240, true, 0, 100);
+		
 		
 
 
@@ -126,21 +131,19 @@ public class LightParameter : Main {
 
 	bool OnAndOf(){
 		counter2 = counter2 + 1;
-
+		
 		if (counter2==delay) {
 			counter2=0;
 			if (Lt.color != Color.black) {
 				Lt.color = Color.black;
 				Lt.intensity = 0.0F;
-				print (1);
-				delay = Random.Range (4, 20);
+				delay = Random.Range (8, 20);
 				return true;
 			}
 			else if(counter2>17){counter2=0;}
 			else {
 				Lt.intensity = 8.0F;
 				Lt.color = Color.white;
-				print (2);
 				return false;
 			}
 		}
