@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class LightParameter : Main {
+public class LightParameter : MonoBehaviour {
 	public Light Lt;
 	private int counter;
 	private int counter2;
@@ -11,17 +11,31 @@ public class LightParameter : Main {
 	private Color c1;
 	private Color c2;
 
+	// Variables for using the Main parameters
+	private bool LSD;
+	private bool Heroine;
+	private bool Ecstasy;
+	private bool bodyGood;
+	private bool soulGood;
+	private int thirdQuestion;
 
 	// Use this for initialization
 	void Start () {
+
+		// Initialize the Main parameters
+     	LSD = Main.Parameters[0];
+		Heroine = Main.Parameters[1];
+		Ecstasy = Main.Parameters[2];
+		bodyGood = Main.Parameters[3];
+		soulGood = Main.Parameters[4];
+		thirdQuestion = Main.getThirdQuestion();
+
 		counter = 0;
 		counter2 = 0;
 		delay = 8;
 		c1 = Color.white;
 		c2 = Color.white;
 		geschwindigkeit = 240;
-
-
 	}
 	
 	// Update is called once per frame

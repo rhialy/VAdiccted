@@ -4,6 +4,17 @@ using UnityEngine.UI;
 
 public class Main : MonoBehaviour {
 
+	// GameObjects for the different doors
+	public GameObject drugRoomDoor;
+	public GameObject questionDoor1True;
+	public GameObject questionDoor1False;
+	public GameObject questionDoor2True;
+	public GameObject questionDoor2False;
+
+	// ObjectParameter Script for activating it
+	public ObjectParameter objectParameter;
+	public LightParameter lightParameter;
+
 	// GameObjects for Drugs
 	[SerializeField] protected GameObject LSD;
 	[SerializeField] protected GameObject Heroine;
@@ -29,20 +40,39 @@ public class Main : MonoBehaviour {
 	public GameObject TextEcstasty;
 
 	// Booleans for Drugs
-	protected bool isLSD;
-	protected bool isHeroine;
-	protected bool isEcstasy;
+	protected static bool isLSD;
+	protected static bool isHeroine;
+	protected static bool isEcstasy;
 
 	// Booleans for our question-parameters (question 1 - 2)
-	protected bool bodyGood;
-	protected bool soulGood;
+	protected static bool bodyGood;
+	protected static bool soulGood;
 
 	// Integer for the third question with three possibilities
-	protected int thirdQuestion; // 1: aufgedreht
+	protected static int thirdQuestion; // 1: aufgedreht
 					   			 // 2: irgendwas seltsames
 					   			 // 3: Ruhe
+	public static int getThirdQuestion() {
+		return thirdQuestion;
+	}
+
+	// Array for transfering the important parameters to the other classes
+	[HideInInspector]
+	private static bool [] parameters = new bool[]{isLSD, isHeroine, isEcstasy, bodyGood, soulGood};
+	[HideInInspector]
+	public static bool [] Parameters {
+		get { return parameters; }
+		set { parameters = value; }
+	}
+
 	// Variables for stopping the Update of the main class after Setting Phase
 	private bool simulationStarted;
+
+	// Variables for managing the doors
+	private int counter;
+	private int question1DoorCounter;
+	private bool secondDoors;
+
 
 	// Use this for initialization
 	void Start () {
@@ -59,7 +89,7 @@ public class Main : MonoBehaviour {
 			Vector3 fwd = transform.TransformDirection (Vector3.right);
 			RaycastHit isHitDrug;
 			
-			if (Physics.Raycast (Player.transform.position, fwd, out isHitDrug, 1)) {
+			if (Physics.Raycast (Player.transform.position, fwd, out isHitDrug, 2)) {
 
 				print ("Ray wurde gecastet");
 
@@ -98,6 +128,20 @@ public class Main : MonoBehaviour {
 			// damit nicht die ganze Zeit zwei Rays gecastet werden -> Leistungssteigerung
 			if (isLSD == true || isHeroine == true || isEcstasy == true) {
 
+				// Open the door to the three questions room:
+				// UPDATE: and also the doors for the first question room, of course >.<
+				if (counter < 450) {
+					drugRoomDoor.transform.Rotate(0, 0.2f, 0);
+					drugRoomDoor.transform.position += new Vector3 (-0.003f, 0, 0.0031f);
+					questionDoor1True.transform.Rotate(0, 0.2f, 0);
+					questionDoor1True.transform.position += new Vector3 (-0.003f, 0, 0.0031f);
+					questionDoor1False.transform.Rotate(0, 0.2f, 0);
+					questionDoor1False.transform.position += new Vector3 (-0.003f, 0, 0.0031f);
+					counter++;
+				}	
+
+				// OpenDoors method can be found on the bottom of this script - for opening the other doors
+				openDoors();
 				// Text nicht mehr anzeigen, weil Droge schon aktiviert
 				TextLSD.SetActive(false);
 				TextEcstasty.SetActive(false);
@@ -105,16 +149,18 @@ public class Main : MonoBehaviour {
 
 				RaycastHit isHit;
 
-				if (Physics.Raycast (Player.transform.position, fwd, out isHit, 10)) {
+				if (Physics.Raycast (Player.transform.position, fwd, out isHit, 1)) {
 
 					// Prüfung der ersten Frage -> Wie fühlst du dich heute?
 					if (isHit.collider.gameObject.name == bodyGoodPositive.name) {
 						print ("Player hat Parameter bodyGood (Positiv) ausgelöst");
 						bodyGood = true;
+						secondDoors = true;
 					}
 					if (isHit.collider.gameObject.name == bodyGoodNegative.name) {
 						print ("Player hat Parameter bodyBad (Negativ) ausgelöst");
 						bodyGood = false;
+						secondDoors = true;
 					}
 
 					// Prüfung der zweiten Frage -> Wie ist deine Stimmung?
@@ -132,19 +178,39 @@ public class Main : MonoBehaviour {
 						print ("Player hat die Erwartung 'Etwas Aufgedrehtes'");
 						thirdQuestion = 1;
 						simulationStarted = false;
+						objectParameter.enabled = true;
+						lightParameter.enabled = true;
 					}
 					if (isHit.collider.gameObject.name == Bizzare.name) {
 						print ("Player hat die Erwartung 'Irgendwas Seltsames'");
 						thirdQuestion = 2;
 						simulationStarted = false;
+						objectParameter.enabled = true;
+						lightParameter.enabled = true;
 					}
 					if (isHit.collider.gameObject.name == Tranquility.name) {
 						print ("Player hat die Erwartung 'Ruhe'");
 						thirdQuestion = 3;
 						simulationStarted = false;
+						objectParameter.enabled = true;
+						lightParameter.enabled = true;
 					}
 				}
 			}
 		}
 	}
+
+	void openDoors () {
+		if (secondDoors == true) {
+			if (question1DoorCounter < 450) {
+				questionDoor2True.transform.Rotate(0, 0.2f, 0);
+				questionDoor2True.transform.position += new Vector3 (-0.003f, 0, 0.0031f);
+				questionDoor2False.transform.Rotate(0, 0.2f, 0);
+				questionDoor2False.transform.position += new Vector3 (-0.003f, 0, 0.0031f);
+				question1DoorCounter++;
+			}
+		}
+
+	}
+
 }
