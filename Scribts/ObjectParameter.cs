@@ -111,7 +111,12 @@ public class ObjectParameter : MonoBehaviour {
 			completeIntensity 	= completeIntensity + 5;
 		}
 	}
-	
+
+	// Using this for keeping our variables
+	void Awake() {
+		DontDestroyOnLoad (this);
+	}	
+
 	// Update is called once per frame
 	void Update () {
 		// Wenn testTrigger is active, dann tue dies und das

@@ -10,6 +10,7 @@ public class Main : MonoBehaviour {
 	public GameObject questionDoor1False;
 	public GameObject questionDoor2True;
 	public GameObject questionDoor2False;
+	private GameObject [] thirdQuestionDoors;
 
 	// ObjectParameter Script for activating it
 	public ObjectParameter objectParameter;
@@ -50,8 +51,8 @@ public class Main : MonoBehaviour {
 
 	// Integer for the third question with three possibilities
 	protected static int thirdQuestion; // 1: aufgedreht
-					   			 // 2: irgendwas seltsames
-					   			 // 3: Ruhe
+					   			 		// 2: irgendwas seltsames
+					   			 		// 3: Ruhe
 	public static int getThirdQuestion() {
 		return thirdQuestion;
 	}
@@ -70,13 +71,20 @@ public class Main : MonoBehaviour {
 
 	// Variables for managing the doors
 	private int counter;
-	private int question1DoorCounter;
+	private int questionDoorCounter;
 	private bool secondDoors;
+	private bool thirdDoors;
 
 
 	// Use this for initialization
 	void Start () {
 		simulationStarted = true;
+		thirdQuestionDoors = GameObject.FindGameObjectsWithTag ("thirdQuestionDoor");
+	}
+
+	// We use this for keeping our parameters when loading another scene
+	void Awake() {
+		DontDestroyOnLoad (this);
 	}
 
 	// Update is called once per frame
@@ -132,16 +140,17 @@ public class Main : MonoBehaviour {
 				// UPDATE: and also the doors for the first question room, of course >.<
 				if (counter < 450) {
 					drugRoomDoor.transform.Rotate(0, 0.2f, 0);
-					drugRoomDoor.transform.position += new Vector3 (-0.003f, 0, 0.0031f);
+					drugRoomDoor.transform.position += new Vector3 (-0.002f, 0, 0.0021f);
 					questionDoor1True.transform.Rotate(0, 0.2f, 0);
-					questionDoor1True.transform.position += new Vector3 (-0.003f, 0, 0.0031f);
+					questionDoor1True.transform.position += new Vector3 (-0.002f, 0, 0.0021f);
 					questionDoor1False.transform.Rotate(0, 0.2f, 0);
-					questionDoor1False.transform.position += new Vector3 (-0.003f, 0, 0.0031f);
+					questionDoor1False.transform.position += new Vector3 (-0.002f, 0, 0.0021f);
 					counter++;
 				}	
 
 				// OpenDoors method can be found on the bottom of this script - for opening the other doors
 				openDoors();
+
 				// Text nicht mehr anzeigen, weil Droge schon aktiviert
 				TextLSD.SetActive(false);
 				TextEcstasty.SetActive(false);
@@ -167,10 +176,14 @@ public class Main : MonoBehaviour {
 					if (isHit.collider.gameObject.name == soulGoodPositive.name) {
 						print ("Player hat Parameter soulGood (Positiv) ausgelöst");
 						soulGood = true;
+						thirdDoors = true;
+						questionDoorCounter = 0;
 					}
 					if (isHit.collider.gameObject.name == soulGoodNegative.name) {
 						print ("Player hat Parameter soulGood (Negativ) ausgelöst");
 						soulGood = false;
+						thirdDoors = true;
+						questionDoorCounter = 0;
 					}
 
 					// Prüfung der dritten Frage -> Welche Erwartung hast du?
@@ -201,13 +214,26 @@ public class Main : MonoBehaviour {
 	}
 
 	void openDoors () {
+
 		if (secondDoors == true) {
-			if (question1DoorCounter < 450) {
+			if (questionDoorCounter < 450) {
 				questionDoor2True.transform.Rotate(0, 0.2f, 0);
-				questionDoor2True.transform.position += new Vector3 (-0.003f, 0, 0.0031f);
+				questionDoor2True.transform.position += new Vector3 (-0.002f, 0, 0.0021f);
 				questionDoor2False.transform.Rotate(0, 0.2f, 0);
-				questionDoor2False.transform.position += new Vector3 (-0.003f, 0, 0.0031f);
-				question1DoorCounter++;
+				questionDoor2False.transform.position += new Vector3 (-0.002f, 0, 0.0021f);
+				questionDoorCounter++;
+			}
+		}
+
+		if (thirdDoors == true) {
+
+			secondDoors = false;
+			if (questionDoorCounter < 450) {
+				foreach (GameObject thirdQuestionDoor in thirdQuestionDoors) {
+					thirdQuestionDoor.transform.Rotate(0, 0.2f, 0);
+					thirdQuestionDoor.transform.position += new Vector3 (-0.002f, 0, 0.0021f);
+				}
+				questionDoorCounter++;
 			}
 		}
 
