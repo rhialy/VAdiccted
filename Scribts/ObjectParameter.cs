@@ -30,11 +30,11 @@ public class ObjectParameter : MonoBehaviour {
 	private int thirdQuestion;
 
 	// Hier werden die verschiedenen Scripts gelistet, die initialisiert werden sollen:
-	public TestScript testScript;
+
 
 	// Die folgenden GOs sind notwendig, damit wir festlegen können bei welchem
 	// Trigger welches Script für welche Objekte ausgelöst wird.
-	public GameObject testActivatedGameObject;
+
 
 	// ArrayList for deactivating all trigger GOs at start
 	private GameObject [] iniDeactivationGO;
@@ -62,14 +62,17 @@ public class ObjectParameter : MonoBehaviour {
 
 		// System for defining the determining variables; affected by drugs
 		if (isLSD == true) {
+			print("LSD");
 			movementIntensity 	= movementIntensity + 5;
 			sizeChangeIntensity = sizeChangeIntensity + 5;
 			completeIntensity 	= completeIntensity + 5;
 		} else if (isHeroine == true) {
+			print ("Heroine");
 			movementIntensity 	= movementIntensity + 5;
 			sizeChangeIntensity = sizeChangeIntensity + 5;
 			completeIntensity 	= completeIntensity + 5;
 		} else if (isEcstasy == true) {
+			print ("Ecstasy");
 			movementIntensity 	= movementIntensity + 5;
 			sizeChangeIntensity = sizeChangeIntensity + 5;
 			completeIntensity 	= completeIntensity + 5;
@@ -119,10 +122,7 @@ public class ObjectParameter : MonoBehaviour {
 
 	// Update is called once per frame
 	void Update () {
-		// Wenn testTrigger is active, dann tue dies und das
-		if (testActivatedGameObject.activeSelf) {
-			testScript.enabled = true;
-		}
+
 	}
 
 

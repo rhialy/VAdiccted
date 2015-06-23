@@ -3,8 +3,9 @@ using System.Collections;
 using UnityEngine.UI;
 
 [RequireComponent(typeof(AudioSource))]
-public class PlayerController : MonoBehaviour
-{
+
+public class PlayerController : MonoBehaviour {
+
 	public bool controllable = false;
 	
 	public float speed = 7.0f;
@@ -21,16 +22,17 @@ public class PlayerController : MonoBehaviour
 	public AudioSource HSource;
 	public AudioSource FSource;
 	public Soundbehavior Sound;
+
 	private int c = 0;
-	
+
+	private float lastFrameHAxis;
+	private bool hAxis;
+
 	// Use this for initialization
-	void Start()
-	{
-		LSD = Main.Parameters[0];
-		Ecstasy = Main.Parameters[2];
+	void Start() {
+		//LSD = Main.Parameters[0];
+		//Ecstasy = Main.Parameters[2];
 		controller = GetComponent<CharacterController>();
-
-
 	}
 	
 	// Update is called once per frame
@@ -43,30 +45,39 @@ public class PlayerController : MonoBehaviour
 			moveDirection = transform.TransformDirection(moveDirection);
 			moveDirection *= speed;
 
+			HSource = Sound.PlaySound (HSource);
 
-			HSource=Sound.PlaySound (HSource);
-
-
-			if (Input.GetButton ("Horizontal") || Input.GetButton ("Vertical")) {
-
-				FSource= Sound.PlaySound(FSource);
-
+			if (Input.GetAxisRaw("Horizontal") != 0 || Input.GetAxisRaw("Vertical") != 0) {
+				hAxis = true;
 			} else {
+				hAxis = false;
+			}
+
+			if (hAxis == true) {
+				FSource = Sound.PlaySound (FSource);
+			} else if (hAxis == false)  {
 				Sound.StopSound (FSource);
 			}
 
-			while (Input.GetKeyDown (KeyCode.LeftShift)) {
+			/*while (Input.GetKeyDown (KeyCode.LeftShift)) {
 				moveDirection *= runningSpeed;
 
-			}
+			}*/
 
 			if (Input.GetButton("Jump"))
 				moveDirection.y = jumpSpeed;	
+
 		}
+
 		moveDirection.y -= gravity * Time.deltaTime;
 		controller.Move(moveDirection * Time.deltaTime);
 
 	}
+
+	void LateUpdate() {
+		lastFrameHAxis = Input.GetAxisRaw ("Horizontal");
+	}
+
 	public void Heart(){
 		if (LSD == true || Ecstasy == true) {
 			Sound.speed (HSource, 1.8F, true);
