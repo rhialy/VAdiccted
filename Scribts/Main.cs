@@ -4,6 +4,9 @@ using UnityEngine.UI;
 
 public class Main : MonoBehaviour {
 
+	// public variables for Script Manager GO, because "this" doesnt function properlly
+	public GameObject ScriptManager;
+
 	// GameObjects for the different doors
 	public GameObject drugRoomDoor;
 	public GameObject questionDoor1True;
@@ -59,7 +62,7 @@ public class Main : MonoBehaviour {
 
 	// Array for transfering the important parameters to the other classes
 	[HideInInspector]
-	private static bool [] parameters = new bool[]{isLSD, isHeroine, isEcstasy, bodyGood, soulGood};
+	private static bool[] parameters;
 	[HideInInspector]
 	public static bool [] Parameters {
 		get { return parameters; }
@@ -71,6 +74,7 @@ public class Main : MonoBehaviour {
 
 	// Variables for managing the doors
 	private int counter;
+	private int phaseCounter;
 	private int questionDoorCounter;
 	private bool secondDoors;
 	private bool thirdDoors;
@@ -79,19 +83,21 @@ public class Main : MonoBehaviour {
 	// Use this for initialization
 	void Start () {
 		simulationStarted = true;
+		phaseCounter = 1;
 		thirdQuestionDoors = GameObject.FindGameObjectsWithTag ("thirdQuestionDoor");
 	}
 
 	// We use this for keeping our parameters when loading another scene
 	void Awake() {
-		DontDestroyOnLoad (this);
+		DontDestroyOnLoad (ScriptManager);
+		Application.targetFrameRate = 175;
 	}
 
 	// Update is called once per frame
 	void Update () {
 
-		// Diese Bedingung beendet jegliche Raycasts nachdem die Parameter alle festgelegt wurden
-		// und die Simulation beginnt, da Raycasts viel Leistung auffressen
+		// this conditional finishes the raycasting when all parameters are set
+		// because raycasting is quite performance heavy.
 		if (simulationStarted == true) {
 
 			Vector3 fwd = transform.TransformDirection (Vector3.right);
@@ -101,27 +107,33 @@ public class Main : MonoBehaviour {
 
 				print ("Ray wurde gecastet");
 
-				// Vergleicht den Namen des mit dem Raycast getroffenen Objekts mit dem Namen
-				// der Drogen und setzte die jeweiligen Bools auf true. (Falls "e" gedrückt ist)
-				// TODO: den Text einblenden der bei der jeweiligen Droge angezeigt werden soll
-
-				if (isHitDrug.collider.gameObject.name == LSD.name) {
-					print ("Collider von LSD wurde getroffen");
-					TextLSD.SetActive(true);
-					if(Input.GetKey("e")){
-						isLSD = true;
-					}
-				} else if (isHitDrug.collider.gameObject.name == Heroine.name) {
-					print ("Collider von HEROIN wurde getroffen");
-					TextHeroine.SetActive(true);
-					if(Input.GetKey("e")){
-						isHeroine = true;
-					}
-				} else if (isHitDrug.collider.gameObject.name == Ecstasy.name) {
-					print ("Collider von ECSTASY wurde getroffen");
-					TextEcstasty.SetActive(true);
-					if(Input.GetKey("e")){
-						isEcstasy = true;
+				// compares the collider which is hit by the raycast and the name of the 
+				// drug and sets the specific boolean true. (if "e" or "a-button" is pressed)
+				if (phaseCounter == 1) {
+					if (isHitDrug.collider.gameObject.name == LSD.name) {
+						print ("Collider von LSD wurde getroffen");
+						TextLSD.SetActive(true);
+						if(Input.GetButton("Fire2")){
+							isLSD = true;
+							phaseCounter = 2;
+							Destroy (LSD);
+						}
+					} else if (isHitDrug.collider.gameObject.name == Heroine.name) {
+						print ("Collider von HEROIN wurde getroffen");
+						TextHeroine.SetActive(true);
+						if(Input.GetButton("Fire2")){
+							isHeroine = true;
+							phaseCounter = 2;
+							Destroy (Heroine);
+						}
+					} else if (isHitDrug.collider.gameObject.name == Ecstasy.name) {
+						print ("Collider von ECSTASY wurde getroffen");
+						TextEcstasty.SetActive(true);
+						if(Input.GetButton("Fire2")){
+							isEcstasy = true;
+							phaseCounter = 2;
+							Destroy(Ecstasy);
+						}
 					}
 				}
 			} else  {
@@ -160,53 +172,64 @@ public class Main : MonoBehaviour {
 
 				if (Physics.Raycast (Player.transform.position, fwd, out isHit, 1)) {
 
+					if (phaseCounter == 2) {
 					// Prüfung der ersten Frage -> Wie fühlst du dich heute?
-					if (isHit.collider.gameObject.name == bodyGoodPositive.name) {
-						print ("Player hat Parameter bodyGood (Positiv) ausgelöst");
-						bodyGood = true;
-						secondDoors = true;
-					}
-					if (isHit.collider.gameObject.name == bodyGoodNegative.name) {
-						print ("Player hat Parameter bodyBad (Negativ) ausgelöst");
-						bodyGood = false;
-						secondDoors = true;
+						if (isHit.collider.gameObject.name == bodyGoodPositive.name) {
+							print ("Player hat Parameter bodyGood (Positiv) ausgelöst");
+							bodyGood = true;
+							secondDoors = true;
+							phaseCounter = 3;
+						}
+						if (isHit.collider.gameObject.name == bodyGoodNegative.name) {
+							print ("Player hat Parameter bodyBad (Negativ) ausgelöst");
+							bodyGood = false;
+							secondDoors = true;
+							phaseCounter = 3;
+						}
 					}
 
 					// Prüfung der zweiten Frage -> Wie ist deine Stimmung?
-					if (isHit.collider.gameObject.name == soulGoodPositive.name) {
-						print ("Player hat Parameter soulGood (Positiv) ausgelöst");
-						soulGood = true;
-						thirdDoors = true;
-						questionDoorCounter = 0;
-					}
-					if (isHit.collider.gameObject.name == soulGoodNegative.name) {
-						print ("Player hat Parameter soulGood (Negativ) ausgelöst");
-						soulGood = false;
-						thirdDoors = true;
-						questionDoorCounter = 0;
+					if (phaseCounter == 3) {
+						if (isHit.collider.gameObject.name == soulGoodPositive.name) {
+							print ("Player hat Parameter soulGood (Positiv) ausgelöst");
+							soulGood = true;
+							thirdDoors = true;
+							questionDoorCounter = 0;
+							phaseCounter = 4;
+						}
+						if (isHit.collider.gameObject.name == soulGoodNegative.name) {
+							print ("Player hat Parameter soulGood (Negativ) ausgelöst");
+							soulGood = false;
+							thirdDoors = true;
+							questionDoorCounter = 0;
+							phaseCounter = 4;
+						}
 					}
 
 					// Prüfung der dritten Frage -> Welche Erwartung hast du?
-					if (isHit.collider.gameObject.name == woundUp.name) {
-						print ("Player hat die Erwartung 'Etwas Aufgedrehtes'");
-						thirdQuestion = 1;
-						simulationStarted = false;
-						objectParameter.enabled = true;
-						lightParameter.enabled = true;
+					if (phaseCounter == 4) {
+						if (isHit.collider.gameObject.name == woundUp.name) {
+							print ("Player hat die Erwartung 'Etwas Aufgedrehtes'");
+							thirdQuestion = 1;
+							simulationStarted = false;
+							phaseCounter = 5;
+						}
+						if (isHit.collider.gameObject.name == Bizzare.name) {
+							print ("Player hat die Erwartung 'Irgendwas Seltsames'");
+							thirdQuestion = 2;
+							simulationStarted = false;
+							phaseCounter = 5;
+						}
+						if (isHit.collider.gameObject.name == Tranquility.name) {
+							print ("Player hat die Erwartung 'Ruhe'");
+							thirdQuestion = 3;
+							simulationStarted = false;
+							phaseCounter = 5;
+						}
 					}
-					if (isHit.collider.gameObject.name == Bizzare.name) {
-						print ("Player hat die Erwartung 'Irgendwas Seltsames'");
-						thirdQuestion = 2;
-						simulationStarted = false;
-						objectParameter.enabled = true;
-						lightParameter.enabled = true;
-					}
-					if (isHit.collider.gameObject.name == Tranquility.name) {
-						print ("Player hat die Erwartung 'Ruhe'");
-						thirdQuestion = 3;
-						simulationStarted = false;
-						objectParameter.enabled = true;
-						lightParameter.enabled = true;
+
+					if (phaseCounter == 5) {
+						parameters = new bool[]{isLSD, isHeroine, isEcstasy, bodyGood, soulGood};
 					}
 				}
 			}

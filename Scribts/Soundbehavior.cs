@@ -2,11 +2,23 @@
 using System.Collections;
 
 [RequireComponent(typeof(AudioSource))]
-public class Soundbehavior : Main {
-	public AudioClip Footsteps;
+public class Soundbehavior : MonoBehaviour {
+	private bool LSD;
+	private bool Heroine;
+	private bool Ecstasy;
+	private bool bodyGood;
+	private bool soulGood;
+	private int thirdQuestion;
+
 	// Use this for initialization
 	void Start () {
-
+		// Initialize the Main parameters
+		LSD = Main.Parameters[0];
+		Heroine = Main.Parameters[1];
+		Ecstasy = Main.Parameters[2];
+		bodyGood = Main.Parameters[3];
+		soulGood = Main.Parameters[4];
+		thirdQuestion = Main.getThirdQuestion();
 	}
 	
 	// Update is called once per frame
@@ -16,14 +28,33 @@ public class Soundbehavior : Main {
 	}
 	//zum Abspielen eines Sounds wannimmer erwünscht.
 
-	public void PlaySound(AudioClip clip){
+	public AudioSource PlaySound(AudioSource source){
 		AudioSource audio;
-		audio = GetComponent<AudioSource> ();
+		audio = source;
 		if(!audio.isPlaying){
-			audio.clip=clip;
 			audio.Play();
 		}
+		return audio;
 
+	}
+	public void StopSound(AudioSource source){
+		AudioSource audio;
+		audio = source;
+		if (audio.isPlaying) {
+			audio.Stop ();
+		}
+	}
+	public void speed(AudioSource source, float Pitch,bool max){
+		if (max == true) {
+			if (source.pitch <= Pitch) {
+				source.pitch += 0.1F;
+
+			}
+		} else {
+			if (source.pitch >= Pitch) {
+				source.pitch-=0.1F;
+			}
+		}
 	}
 }
 /*
