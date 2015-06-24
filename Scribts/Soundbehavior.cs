@@ -2,7 +2,9 @@
 using System.Collections;
 
 [RequireComponent(typeof(AudioSource))]
+
 public class Soundbehavior : MonoBehaviour {
+
 	private bool LSD;
 	private bool Heroine;
 	private bool Ecstasy;
