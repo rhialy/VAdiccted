@@ -5,23 +5,23 @@ public class LightParameter : MonoBehaviour {
 	public Light Lt;
 	private int counter;
 	private int counter2;
-	private int geschwindigkeit=240;
-	private int delay;
+	private int geschwindigkeit=700;
+	private int delay = 8;
 	//Speichervariablen für zwei Farben ->fließender Übergang
 	private Color c1;
 	private Color c2;
 	private Color c3;
 
-	private int State=1;
+	private int State=0;
 
 
 	// Variables for using the Main parameters
-	private bool LSD;
-	private bool Heroine;
-	private bool Ecstasy;
-	private bool bodyGood;
-	private bool soulGood;
-	private int thirdQuestion;
+	protected bool LSD;
+	protected bool Heroine;
+	protected bool Ecstasy;
+	protected bool bodyGood;
+	protected bool soulGood;
+	protected int thirdQuestion;
 
 	// Use this for initialization
 	void Start () {
@@ -41,6 +41,7 @@ public class LightParameter : MonoBehaviour {
 		c2 = Color.white;
 		c3 = Color.white;
 
+		//print (LSD);
 	}
 	
 	// Update is called once per frame
@@ -50,11 +51,11 @@ public class LightParameter : MonoBehaviour {
 		case 0:
 			break;
 		case 1:
-			Helligkeit (geschwindigkeit, true, 0, 100);
-			Farbe (geschwindigkeit, true, 0, 100);
+			Helligkeit (geschwindigkeit, true, 0, 100, Lt);
+			Farbe (geschwindigkeit, true, 0, 100, Lt);
 			break;
 		case 2:
-			OnAndOf ();
+			OnAndOf (Lt);
 			break;
 		
 		}
@@ -66,13 +67,13 @@ public class LightParameter : MonoBehaviour {
 
 	
 	//Helligkeit
-	public void Helligkeit (int geschwindigkeit, bool Pabhängig, float min, float max) {
+	public void Helligkeit (int geschwindigkeit, bool Pabhängig, float min, float max, Light _Lt) {
 
 		counter = counter + 1;
 
 		if (counter == geschwindigkeit) {
 
-			if(geschwindigkeit!=0){geschwindigkeit -=10;}
+			if(geschwindigkeit!=0){geschwindigkeit -=25;}
 
 				//speichervariable für Zufallszahl
 				float random;
@@ -106,7 +107,7 @@ public class LightParameter : MonoBehaviour {
 				float duration = 1.0f;
 				float phi = Time.time / duration * 2 * Mathf.PI;
 				float amplitude = Mathf.Cos (phi) * i1 + i2;
-				Lt.intensity = amplitude;
+				_Lt.intensity = amplitude;
 
 
 
@@ -115,7 +116,7 @@ public class LightParameter : MonoBehaviour {
 
 	
 	//Farbe
-	public void Farbe( int geschwindigkeit, bool Panbhängigkeit, float min,float max) {
+	public void Farbe(int geschwindigkeit, bool Panbhängigkeit, float min,float max, Light _Lt) {
 		//counter=counter +1;
 
 		//speichervariable für Zufallszahl
@@ -145,34 +146,35 @@ public class LightParameter : MonoBehaviour {
 			if (20 < random && random < 40) {c2 = Color.red;}
 			if (0 < random && random < 20) {c2 = Color.grey;}
 			//Übergang
-			c1=Lt.color;
+			c1=_Lt.color;
 
 		}
 		float duration=1.0f;
 		float t = Mathf.PingPong(Time.time, duration) / duration;
-		Lt.color=Color.Lerp (c1,c2,t);
-		c3 = Lt.color;
+		_Lt.color=Color.Lerp (c1,c2,t);
+		c3 = _Lt.color;
 	}
 
-	bool OnAndOf(){
+	public void OnAndOf(Light _Lt){
 		counter2 = counter2 + 1;
-		
+		//print (delay);
 		if (counter2==delay) {
 			counter2=0;
-			if (Lt.color != Color.black) {
-				Lt.color = Color.black;
-				Lt.intensity = 0.0F;
+			//print ("firstif");
+			if (_Lt.color != Color.black) {
+				_Lt.color = Color.black;
+				_Lt.intensity = 0.0F;
 				delay = Random.Range (8, 20);
-				return true;
+				//return true;
 			}
 			else if(counter2>17){counter2=0;}
 			else {
-				Lt.intensity = 8.0F;
-				Lt.color = Color.white;
-				return false;
+				_Lt.intensity = 8.0F;
+				_Lt.color = Color.white;
+				//return false;
 			}
 		}
-		return false;
+		//return false;
 
 	}
 	public void overcast(bool heller){

@@ -68,50 +68,50 @@ public class ObjectParameter : MonoBehaviour {
 			completeIntensity 	= completeIntensity + 5;
 		} else if (isHeroine == true) {
 			print ("Heroine");
-			movementIntensity 	= movementIntensity + 5;
-			sizeChangeIntensity = sizeChangeIntensity + 5;
-			completeIntensity 	= completeIntensity + 5;
+			movementIntensity 	= movementIntensity + 0;
+			sizeChangeIntensity = sizeChangeIntensity + 0;
+			completeIntensity 	= completeIntensity + 3;
 		} else if (isEcstasy == true) {
 			print ("Ecstasy");
-			movementIntensity 	= movementIntensity + 5;
-			sizeChangeIntensity = sizeChangeIntensity + 5;
+			movementIntensity 	= movementIntensity + 0;
+			sizeChangeIntensity = sizeChangeIntensity + 0;
 			completeIntensity 	= completeIntensity + 5;
 		}
 		
 		// System for defining the determining variables; affected by the 2 first parameters
 		if (bodyGood == true) {
-			movementIntensity 	= movementIntensity + 5;
-			sizeChangeIntensity = sizeChangeIntensity + 5;
-			completeIntensity 	= completeIntensity + 5;
+			movementIntensity 	= movementIntensity + 3;
+			sizeChangeIntensity = sizeChangeIntensity + 3;
+			completeIntensity 	= completeIntensity + 3;
 		} else if (bodyGood == false) {
-			movementIntensity 	= movementIntensity + 5;
-			sizeChangeIntensity = sizeChangeIntensity + 5;
-			completeIntensity 	= completeIntensity + 5;
+			movementIntensity 	= movementIntensity + 1;
+			sizeChangeIntensity = sizeChangeIntensity + 1;
+			completeIntensity 	= completeIntensity + 1;
 		}
 		
 		if (soulGood == true) {
-			movementIntensity 	= movementIntensity + 5;
-			sizeChangeIntensity = sizeChangeIntensity + 5;
-			completeIntensity 	= completeIntensity + 5;
+			movementIntensity 	= movementIntensity + 3;
+			sizeChangeIntensity = sizeChangeIntensity + 3;
+			completeIntensity 	= completeIntensity + 3;
 		} else if (soulGood == false) {
-			movementIntensity 	= movementIntensity + 5;
-			sizeChangeIntensity = sizeChangeIntensity + 5;
-			completeIntensity 	= completeIntensity + 5;
+			movementIntensity 	= movementIntensity + 1;
+			sizeChangeIntensity = sizeChangeIntensity + 1;
+			completeIntensity 	= completeIntensity + 1;
 		}
 		
 		// System for defining the determining variables; affected by the third question
-		if (Main.getThirdQuestion() == 1) {
-			movementIntensity 	= movementIntensity + 5;
-			sizeChangeIntensity = sizeChangeIntensity + 5;
-			completeIntensity 	= completeIntensity + 5;
-		} else if (Main.getThirdQuestion() == 2) {
-			movementIntensity 	= movementIntensity + 5;
-			sizeChangeIntensity = sizeChangeIntensity + 5;
-			completeIntensity 	= completeIntensity + 5;
-		} else if (Main.getThirdQuestion() == 3) {
-			movementIntensity 	= movementIntensity + 5;
-			sizeChangeIntensity = sizeChangeIntensity + 5;
-			completeIntensity 	= completeIntensity + 5;
+		if (Main.getThirdQuestion() == 1) {  // something bizzare
+			movementIntensity 	= movementIntensity + 0;
+			sizeChangeIntensity = sizeChangeIntensity + 4;
+			completeIntensity 	= completeIntensity + 4;
+		} else if (Main.getThirdQuestion() == 2) {    // something quiet
+			movementIntensity 	= movementIntensity + 0;
+			sizeChangeIntensity = sizeChangeIntensity + 0;
+			completeIntensity 	= completeIntensity + -5;
+		} else if (Main.getThirdQuestion() == 3) {     // wound up
+			movementIntensity 	= movementIntensity + 4;
+			sizeChangeIntensity = sizeChangeIntensity + 0;
+			completeIntensity 	= completeIntensity + 4;
 		}
 	}
 
@@ -122,7 +122,7 @@ public class ObjectParameter : MonoBehaviour {
 
 	// Update is called once per frame
 	void Update () {
-
+		//print (movementIntensity);
 	}
 
 
