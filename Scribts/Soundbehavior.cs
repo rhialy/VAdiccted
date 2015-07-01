@@ -28,7 +28,7 @@ public class Soundbehavior : MonoBehaviour {
 
 
 	}
-	//zum Abspielen eines Sounds wannimmer erwünscht.
+	//Play a Sound whenever you want,without repeating itself while  playing
 
 	public AudioSource PlaySound(AudioSource source){
 		AudioSource audio;
@@ -39,6 +39,7 @@ public class Soundbehavior : MonoBehaviour {
 		return audio;
 
 	}
+	//stop a playing sound 
 	public void StopSound(AudioSource source){
 		AudioSource audio;
 		audio = source;
@@ -46,6 +47,7 @@ public class Soundbehavior : MonoBehaviour {
 			audio.Stop ();
 		}
 	}
+	//make the speed of a sound faster(and higher) or slower
 	public void speed(AudioSource source, float Pitch,bool max){
 		if (max == true) {
 			if (source.pitch <= Pitch) {
@@ -59,21 +61,3 @@ public class Soundbehavior : MonoBehaviour {
 		}
 	}
 }
-/*
- * AudioSource.panStereo	(einstellen der herkunftsrichtung)
- * AudioSource.spatialBlend (2D oder 3D sound .0 bis 1.0)
- * AudioRolloffMode.Logarithmic (real world roll of)
- * PlayerSettings.PS3.soundPath
- * AudioListener.volume (0.0 bia 0.1)
- * 
- * 
-public class ExampleClass : MonoBehaviour {
-    public AudioClip impact;
-    AudioSource audio;
-    
-    void Start() {
-    	audio = GetComponent<AudioSource>();
- *audio.PlayOneShot(AudioClip clip, float volumeScale = 1.0F);
- * 
- * 
- * */

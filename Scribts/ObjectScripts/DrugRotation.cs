@@ -12,6 +12,6 @@ public class DrugRotation : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-		drug.transform.Rotate(0f, 0.1f, 0f);
+		drug.transform.Rotate(0f, 0.18f, 0f);
 	}
 }

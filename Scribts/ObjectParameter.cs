@@ -22,12 +22,12 @@ public class ObjectParameter : MonoBehaviour {
 	|*********************************************************************/
 
 	// Getter for every parameter
-	private bool isLSD;
-	private bool isHeroine;
-	private bool isEcstasy;
-	private bool bodyGood;
-	private bool soulGood;
-	private int thirdQuestion;
+	protected bool isLSD;
+	protected bool isHeroine;
+	protected bool isEcstasy;
+	protected bool bodyGood;
+	protected bool soulGood;
+	protected int thirdQuestion;
 
 	// Hier werden die verschiedenen Scripts gelistet, die initialisiert werden sollen:
 
@@ -41,9 +41,9 @@ public class ObjectParameter : MonoBehaviour {
 
 	// Variables for inheriting to the child object scripts to
 	// determine in which way everything is affected by our 4 parameters
-	protected int movementIntensity;
-	protected int sizeChangeIntensity;
-	protected int completeIntensity;
+	protected static int movementIntensity = 0;
+	protected static int sizeChangeIntensity = 0;
+	protected static int completeIntensity = 0;
 
 	// Use this for initialization
 	void Start () {
@@ -62,17 +62,17 @@ public class ObjectParameter : MonoBehaviour {
 
 		// System for defining the determining variables; affected by drugs
 		if (isLSD == true) {
-			print("LSD");
+			//print("LSD");
 			movementIntensity 	= movementIntensity + 5;
 			sizeChangeIntensity = sizeChangeIntensity + 5;
 			completeIntensity 	= completeIntensity + 5;
 		} else if (isHeroine == true) {
-			print ("Heroine");
+			//print ("Heroine");
 			movementIntensity 	= movementIntensity + 0;
 			sizeChangeIntensity = sizeChangeIntensity + 0;
 			completeIntensity 	= completeIntensity + 3;
 		} else if (isEcstasy == true) {
-			print ("Ecstasy");
+			//print ("Ecstasy");
 			movementIntensity 	= movementIntensity + 0;
 			sizeChangeIntensity = sizeChangeIntensity + 0;
 			completeIntensity 	= completeIntensity + 5;
@@ -107,12 +107,15 @@ public class ObjectParameter : MonoBehaviour {
 		} else if (Main.getThirdQuestion() == 2) {    // something quiet
 			movementIntensity 	= movementIntensity + 0;
 			sizeChangeIntensity = sizeChangeIntensity + 0;
-			completeIntensity 	= completeIntensity + -5;
+			completeIntensity 	= completeIntensity + -7;
 		} else if (Main.getThirdQuestion() == 3) {     // wound up
 			movementIntensity 	= movementIntensity + 4;
 			sizeChangeIntensity = sizeChangeIntensity + 0;
 			completeIntensity 	= completeIntensity + 4;
 		}
+		print ("Object Parameter || complete Intensity: " + completeIntensity);
+		print ("Object Parameter || sizeChangeIntensity: " + sizeChangeIntensity);
+		print ("Object Parameter || movementIntensity: " + movementIntensity);
 	}
 
 	// Using this for keeping our variables

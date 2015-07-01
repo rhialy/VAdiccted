@@ -4,7 +4,7 @@ using UnityEngine.UI;
 
 public class Main : MonoBehaviour {
 
-	// public variables for Script Manager GO, because "this" doesnt function properlly
+	// public variables for Script Manager GO, because "this" doesnt function properly in Unitys "Awake" method
 	public GameObject ScriptManager;
 
 	// GameObjects for the different doors
@@ -20,6 +20,15 @@ public class Main : MonoBehaviour {
 	public LightParameter lightParameter;
 
 	// GameObjects for Drugs
+	/************************************************************
+	| These fields are serialized to show that it would			|
+	| be possible to use most "public" variables as "protected" |
+	| ones. This is useful when trying to prevent someone 		|
+	| hacking your software. The variables are protected, but   |
+	| also show in the inspector. [Because of serialization].	|
+	| But allas, not necessary for this simulation. And it 		|
+	| leads to more problems than it solves.					|
+	|***********************************************************/
 	[SerializeField] protected GameObject LSD;
 	[SerializeField] protected GameObject Heroine;
 	[SerializeField] protected GameObject Ecstasy;
@@ -53,9 +62,9 @@ public class Main : MonoBehaviour {
 	protected static bool soulGood;
 
 	// Integer for the third question with three possibilities
-	protected static int thirdQuestion; // 1: aufgedreht
-					   			 		// 2: irgendwas seltsames
-					   			 		// 3: Ruhe
+	protected static int thirdQuestion; // 1: irgendwas seltsames
+					   			 		// 2: Ruhe
+					   			 		// 3: etwas aufgedrehtes
 	public static int getThirdQuestion() {
 		return thirdQuestion;
 	}
@@ -69,7 +78,8 @@ public class Main : MonoBehaviour {
 		set { parameters = value; }
 	}
 
-	// Variables for stopping the Update of the main class after Setting Phase
+	// Variables for stopping the Update of the main class after setting all necessary parameters
+	// as the main class is transfered to every scene and the raycasting uses lots of processing power
 	private bool simulationStarted;
 
 	// Variables for managing the doors
@@ -82,7 +92,9 @@ public class Main : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
+		Application.targetFrameRate = 60;
 		simulationStarted = true;
+		thirdQuestion = 0;
 		phaseCounter = 1;
 		thirdQuestionDoors = GameObject.FindGameObjectsWithTag ("thirdQuestionDoor");
 	}
@@ -90,7 +102,7 @@ public class Main : MonoBehaviour {
 	// We use this for keeping our parameters when loading another scene
 	void Awake() {
 		DontDestroyOnLoad (ScriptManager);
-		Application.targetFrameRate = 175;
+		Application.targetFrameRate = 60;
 	}
 
 	// Update is called once per frame
@@ -150,13 +162,13 @@ public class Main : MonoBehaviour {
 
 				// Open the door to the three questions room:
 				// UPDATE: and also the doors for the first question room, of course >.<
-				if (counter < 450) {
-					drugRoomDoor.transform.Rotate(0, 0.2f, 0);
-					drugRoomDoor.transform.position += new Vector3 (-0.002f, 0, 0.0021f);
-					questionDoor1True.transform.Rotate(0, 0.2f, 0);
-					questionDoor1True.transform.position += new Vector3 (-0.002f, 0, 0.0021f);
-					questionDoor1False.transform.Rotate(0, 0.2f, 0);
-					questionDoor1False.transform.position += new Vector3 (-0.002f, 0, 0.0021f);
+				if (counter < 225) {
+					drugRoomDoor.transform.Rotate(0, 0.4f, 0);
+					drugRoomDoor.transform.position += new Vector3 (-0.004f, 0, 0.0042f);
+					questionDoor1True.transform.Rotate(0, 0.4f, 0);
+					questionDoor1True.transform.position += new Vector3 (-0.004f, 0, 0.0042f);
+					questionDoor1False.transform.Rotate(0, 0.4f, 0);
+					questionDoor1False.transform.position += new Vector3 (-0.004f, 0, 0.0042f);
 					counter++;
 				}	
 
@@ -208,42 +220,43 @@ public class Main : MonoBehaviour {
 
 					// Prüfung der dritten Frage -> Welche Erwartung hast du?
 					if (phaseCounter == 4) {
-						if (isHit.collider.gameObject.name == woundUp.name) {
-							print ("Player hat die Erwartung 'Etwas Aufgedrehtes'");
-							thirdQuestion = 1;
-							simulationStarted = false;
-							phaseCounter = 5;
-						}
 						if (isHit.collider.gameObject.name == Bizzare.name) {
 							print ("Player hat die Erwartung 'Irgendwas Seltsames'");
-							thirdQuestion = 2;
+							thirdQuestion = 1;
 							simulationStarted = false;
 							phaseCounter = 5;
 						}
 						if (isHit.collider.gameObject.name == Tranquility.name) {
 							print ("Player hat die Erwartung 'Ruhe'");
+							thirdQuestion = 2;
+							simulationStarted = false;
+							phaseCounter = 5;
+						}
+						if (isHit.collider.gameObject.name == woundUp.name) {
+							print ("Player hat die Erwartung 'Etwas Aufgedrehtes'");
 							thirdQuestion = 3;
 							simulationStarted = false;
 							phaseCounter = 5;
 						}
 					}
 
-					if (phaseCounter == 5) {
-						parameters = new bool[]{isLSD, isHeroine, isEcstasy, bodyGood, soulGood};
-					}
 				}
 			}
+		}
+
+		if (phaseCounter == 5) {
+			parameters = new bool[]{isLSD, isHeroine, isEcstasy, bodyGood, soulGood};
 		}
 	}
 
 	void openDoors () {
 
 		if (secondDoors == true) {
-			if (questionDoorCounter < 450) {
-				questionDoor2True.transform.Rotate(0, 0.2f, 0);
-				questionDoor2True.transform.position += new Vector3 (-0.002f, 0, 0.0021f);
-				questionDoor2False.transform.Rotate(0, 0.2f, 0);
-				questionDoor2False.transform.position += new Vector3 (-0.002f, 0, 0.0021f);
+			if (questionDoorCounter < 225) {
+				questionDoor2True.transform.Rotate(0, 0.4f, 0);
+				questionDoor2True.transform.position += new Vector3 (-0.004f, 0, 0.0042f);
+				questionDoor2False.transform.Rotate(0, 0.4f, 0);
+				questionDoor2False.transform.position += new Vector3 (-0.004f, 0, 0.0042f);
 				questionDoorCounter++;
 			}
 		}
@@ -251,10 +264,10 @@ public class Main : MonoBehaviour {
 		if (thirdDoors == true) {
 
 			secondDoors = false;
-			if (questionDoorCounter < 450) {
+			if (questionDoorCounter < 225) {
 				foreach (GameObject thirdQuestionDoor in thirdQuestionDoors) {
-					thirdQuestionDoor.transform.Rotate(0, 0.2f, 0);
-					thirdQuestionDoor.transform.position += new Vector3 (-0.002f, 0, 0.0021f);
+					thirdQuestionDoor.transform.Rotate(0, 0.4f, 0);
+					thirdQuestionDoor.transform.position += new Vector3 (-0.004f, 0, 0.0042f);
 				}
 				questionDoorCounter++;
 			}

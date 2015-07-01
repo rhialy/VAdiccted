@@ -15,6 +15,6 @@ public class OnTriggerSetActive : MonoBehaviour {
 	// Update is called once per frame
 	void OnTriggerEnter (Collider player) {
 		activatedGameObject.SetActive (true);
-		print ("trigger funktioniert");
+		//print ("trigger funktioniert");
 	}
 }
