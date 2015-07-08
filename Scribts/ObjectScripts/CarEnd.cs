@@ -13,6 +13,7 @@ public class CarEnd : MonoBehaviour {
 	public Light fLt;
 	public GameObject highway;
 	public GameObject forest;
+	public PlayerController playerController;
 
 	private float endCounter;
 	private float carCounter;
@@ -22,6 +23,7 @@ public class CarEnd : MonoBehaviour {
 	private float[] xPos;
 	private float[] yPos;
 	private Vector3[] resetPos;
+	private Vector3 transMoveDirection;
 
 	// Use this for initialization
 	void Start () {
@@ -52,7 +54,9 @@ public class CarEnd : MonoBehaviour {
 			}
 			if (transitionCounter >= 2.9 && transitionCounter < 3.2) {
 				float yPos = player.transform.position.y;
+				transMoveDirection = new Vector3(0, 0, 0);
 				player.transform.position = new Vector3(4.5f, yPos, 27.8f);
+				playerController.setMoveDirection(transMoveDirection);
 				highway.SetActive(true);
 				forest.SetActive(false);
 				foreach (GameObject car in cars) {
@@ -76,22 +80,15 @@ public class CarEnd : MonoBehaviour {
 			transitionCounter = transitionCounter + 1 * Time.deltaTime;
 
 		}
-		if (endCounter > 12.7 && endCounter < 18) {
+
+		if (endCounter > 12.7 && endCounter < 50) {
 			for (int i = 0; i < cars.Length; i++) {
 
 				float carMovement = Random.Range (0.1f, 0.3f);
 				cars [i].transform.position -= new Vector3 (0f, 0f, carMovement);
-				
-				if (carCounter > 450 && carCounter < 550) {
-					cars [i].SetActive (false);
-				}
-				if (carCounter > 600) {
-					cars [i].SetActive (true);
-					//cars [i].transform.position = resetPos [i];
-				}
 			}
-			carCounter = carCounter + 1 * Time.deltaTime;
 		}
+
 		if (endCounter > 13) {
 			player.transform.LookAt(endCar.transform.position);
 			endCar.transform.position += new Vector3 (0f, 0f, 0.5f);
@@ -119,6 +116,10 @@ public class CarEnd : MonoBehaviour {
 			uLt.color = Color.black;
 			dLt.color = Color.black;
 			fLt.color = Color.black;
+			Camera pcm = playerCamera.GetComponent <Camera>();
+			pcm.clearFlags = CameraClearFlags.SolidColor;
+			pcm.backgroundColor = Color.black;
+			Application.Quit();
 		}
 		if (carCounter > 650) {
 			carCounter = 0;

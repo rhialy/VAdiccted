@@ -7,8 +7,13 @@ public class Main : MonoBehaviour {
 	// public variables for Script Manager GO, because "this" doesnt function properly in Unitys "Awake" method
 	public GameObject ScriptManager;
 
+	// Explanation to what the user should do next and which parameter he is triggering
+	// For reference which position in the array is which sound file, look into the inspector of the GO
+	public AudioSource[] manual;  
+
 	// GameObjects for the different doors
 	public GameObject drugRoomDoor;
+	public GameObject ifThirdQuestionDoor;
 	public GameObject questionDoor1True;
 	public GameObject questionDoor1False;
 	public GameObject questionDoor2True;
@@ -83,9 +88,10 @@ public class Main : MonoBehaviour {
 	private bool simulationStarted;
 
 	// Variables for managing the doors
-	private int counter;
+	private int soundPlayed;
+	private float counter;
 	private int phaseCounter;
-	private int questionDoorCounter;
+	private float questionDoorCounter;
 	private bool secondDoors;
 	private bool thirdDoors;
 
@@ -102,7 +108,7 @@ public class Main : MonoBehaviour {
 	// We use this for keeping our parameters when loading another scene
 	void Awake() {
 		DontDestroyOnLoad (ScriptManager);
-		Application.targetFrameRate = 60;
+		//Application.targetFrameRate = 60;
 	}
 
 	// Update is called once per frame
@@ -112,11 +118,21 @@ public class Main : MonoBehaviour {
 		// because raycasting is quite performance heavy.
 		if (simulationStarted == true) {
 
+			if(!manual[0].isPlaying && soundPlayed == 0){
+				soundHandling (manual[0]);
+				//manual[0].Play();
+				soundPlayed = 1;
+			}
+			if(!manual[1].isPlaying && !manual[0].isPlaying && soundPlayed == 1){
+				soundHandling (manual[1]);
+				soundPlayed = 2;
+			}
+
 			Vector3 fwd = transform.TransformDirection (Vector3.right);
 			RaycastHit isHitDrug;
 			
 			if (Physics.Raycast (Player.transform.position, fwd, out isHitDrug, 2)) {
-
+			
 				print ("Ray wurde gecastet");
 
 				// compares the collider which is hit by the raycast and the name of the 
@@ -124,15 +140,25 @@ public class Main : MonoBehaviour {
 				if (phaseCounter == 1) {
 					if (isHitDrug.collider.gameObject.name == LSD.name) {
 						print ("Collider von LSD wurde getroffen");
+						if(!manual[2].isPlaying && soundPlayed == 2){
+							soundHandling (manual[2]);
+							soundPlayed = 3;
+						}
+						if(!manual[3].isPlaying && !manual[2].isPlaying && soundPlayed == 3) {
+							soundHandling (manual[3]);
+							soundPlayed = 4;
+						}
+
 						TextLSD.SetActive(true);
 						if(Input.GetButton("Fire2")){
 							isLSD = true;
+							soundPlayed = 4;
 							phaseCounter = 2;
 							Destroy (LSD);
 						}
 					} else if (isHitDrug.collider.gameObject.name == Heroine.name) {
 						print ("Collider von HEROIN wurde getroffen");
-						TextHeroine.SetActive(true);
+						//TextHeroine.SetActive(true);
 						if(Input.GetButton("Fire2")){
 							isHeroine = true;
 							phaseCounter = 2;
@@ -140,7 +166,7 @@ public class Main : MonoBehaviour {
 						}
 					} else if (isHitDrug.collider.gameObject.name == Ecstasy.name) {
 						print ("Collider von ECSTASY wurde getroffen");
-						TextEcstasty.SetActive(true);
+						//TextEcstasty.SetActive(true);
 						if(Input.GetButton("Fire2")){
 							isEcstasy = true;
 							phaseCounter = 2;
@@ -162,15 +188,31 @@ public class Main : MonoBehaviour {
 
 				// Open the door to the three questions room:
 				// UPDATE: and also the doors for the first question room, of course >.<
-				if (counter < 225) {
-					drugRoomDoor.transform.Rotate(0, 0.4f, 0);
-					drugRoomDoor.transform.position += new Vector3 (-0.004f, 0, 0.0042f);
-					questionDoor1True.transform.Rotate(0, 0.4f, 0);
-					questionDoor1True.transform.position += new Vector3 (-0.004f, 0, 0.0042f);
-					questionDoor1False.transform.Rotate(0, 0.4f, 0);
-					questionDoor1False.transform.position += new Vector3 (-0.004f, 0, 0.0042f);
-					counter++;
-				}	
+				if (drugRoomDoor.transform.position.z <= 0.85) {
+					drugRoomDoor.transform.Rotate(0f, 1.0f, 0f);
+					questionDoor1True.transform.Rotate(0f, 1.0f, 0f);
+					questionDoor1False.transform.Rotate(0f, 1.0f, 0f);
+					drugRoomDoor.transform.position += new Vector3 (-0.01f, 0, 0.0103f);
+					questionDoor1True.transform.position += new Vector3 (-0.01f, 0, 0.0103f);
+					questionDoor1False.transform.position += new Vector3 (-0.01f, 0, 0.0103f);
+				}
+
+				if(!manual[4].isPlaying && soundPlayed == 4){
+					soundHandling (manual[4]);
+					soundPlayed = 5;
+				}
+				if(!manual[5].isPlaying &&  !manual[4].isPlaying && soundPlayed == 5){
+					soundHandling (manual[5]);
+					soundPlayed = 6;
+				}
+				if(!manual[6].isPlaying && !manual[5].isPlaying && soundPlayed == 6) {
+					soundHandling (manual[6]);
+					soundPlayed = 7;
+				}
+				if(!manual[7].isPlaying && !manual[6].isPlaying && soundPlayed == 7) {
+					soundHandling (manual[7]);
+					soundPlayed = 8;
+				}
 
 				// OpenDoors method can be found on the bottom of this script - for opening the other doors
 				openDoors();
@@ -191,23 +233,29 @@ public class Main : MonoBehaviour {
 							bodyGood = true;
 							secondDoors = true;
 							phaseCounter = 3;
+							soundPlayed = 8;
 						}
 						if (isHit.collider.gameObject.name == bodyGoodNegative.name) {
 							print ("Player hat Parameter bodyBad (Negativ) ausgelöst");
 							bodyGood = false;
 							secondDoors = true;
 							phaseCounter = 3;
+							soundPlayed = 8;
 						}
 					}
 
 					// Prüfung der zweiten Frage -> Wie ist deine Stimmung?
 					if (phaseCounter == 3) {
+
+						//print ("inside");
+
 						if (isHit.collider.gameObject.name == soulGoodPositive.name) {
 							print ("Player hat Parameter soulGood (Positiv) ausgelöst");
 							soulGood = true;
 							thirdDoors = true;
 							questionDoorCounter = 0;
 							phaseCounter = 4;
+							soundPlayed = 11;
 						}
 						if (isHit.collider.gameObject.name == soulGoodNegative.name) {
 							print ("Player hat Parameter soulGood (Negativ) ausgelöst");
@@ -215,6 +263,7 @@ public class Main : MonoBehaviour {
 							thirdDoors = true;
 							questionDoorCounter = 0;
 							phaseCounter = 4;
+							soundPlayed = 11;
 						}
 					}
 
@@ -252,27 +301,69 @@ public class Main : MonoBehaviour {
 	void openDoors () {
 
 		if (secondDoors == true) {
-			if (questionDoorCounter < 225) {
-				questionDoor2True.transform.Rotate(0, 0.4f, 0);
-				questionDoor2True.transform.position += new Vector3 (-0.004f, 0, 0.0042f);
-				questionDoor2False.transform.Rotate(0, 0.4f, 0);
-				questionDoor2False.transform.position += new Vector3 (-0.004f, 0, 0.0042f);
-				questionDoorCounter++;
+
+			if(!manual[8].isPlaying && soundPlayed == 8){
+				soundHandling (manual[8]);
+				soundPlayed = 9;
+				print ("nummer 8");
+			}
+			if(!manual[9].isPlaying && !manual[8].isPlaying && soundPlayed == 9) {
+				soundHandling (manual[9]);
+				soundPlayed = 10;
+				print ("nummer 9");
+			}
+			if(!manual[10].isPlaying && !manual[9].isPlaying && soundPlayed == 10) {
+				soundHandling (manual[10]);
+				soundPlayed = 11;
+			}
+
+			if (questionDoor2True.transform.position.z <= 5.0) {
+				questionDoor2True.transform.Rotate(0, 1.0f, 0);
+				questionDoor2True.transform.position += new Vector3 (-0.01f, 0, 0.0103f);
+				questionDoor2False.transform.Rotate(0, 1.0f, 0);
+				questionDoor2False.transform.position += new Vector3 (-0.01f, 0, 0.0103f);
+				questionDoorCounter = questionDoorCounter + 1 * Time.deltaTime;
 			}
 		}
 
 		if (thirdDoors == true) {
 
-			secondDoors = false;
-			if (questionDoorCounter < 225) {
-				foreach (GameObject thirdQuestionDoor in thirdQuestionDoors) {
-					thirdQuestionDoor.transform.Rotate(0, 0.4f, 0);
-					thirdQuestionDoor.transform.position += new Vector3 (-0.004f, 0, 0.0042f);
-				}
-				questionDoorCounter++;
+			if(!manual[11].isPlaying && soundPlayed == 11){
+				soundHandling (manual[11]);
+				soundPlayed = 12;
 			}
+			if(!manual[12].isPlaying && !manual[11].isPlaying && soundPlayed == 12) {
+				soundHandling (manual[12]);
+				soundPlayed = 13;
+			}
+			if(!manual[13].isPlaying && !manual[12].isPlaying && soundPlayed == 13) {
+				soundHandling (manual[13]);
+				soundPlayed = 14;
+			}
+			if(!manual[14].isPlaying && !manual[13].isPlaying && soundPlayed == 14) {
+				soundHandling (manual[14]);
+				soundPlayed = 15;
+			}
+
+			secondDoors = false;
+
+			foreach (GameObject thirdQuestionDoor in thirdQuestionDoors) {
+				if (ifThirdQuestionDoor.transform.position.z <= 5) {
+					thirdQuestionDoor.transform.Rotate(0, 1.0f, 0);
+					thirdQuestionDoor.transform.position += new Vector3 (-0.01f, 0, 0.0103f);
+				}
+				questionDoorCounter = questionDoorCounter + 1 * Time.deltaTime;
+			}
+
 		}
 
+	}
+
+	void soundHandling (AudioSource isPlaying) {
+		foreach (AudioSource manualA in manual) {
+			manualA.Stop ();
+		}
+		isPlaying.Play ();
 	}
 
 }

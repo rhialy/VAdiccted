@@ -8,6 +8,8 @@ public class whiteRoomPiano : ObjectParameter {
 	public Rigidbody[] pianoParts;
 	public GameObject room;
 	public GameObject teddys;
+	public AudioSource pianoNorm;
+	public AudioSource pianoBass;
 
 	private bool isPiano;
 	private bool destroyed;
@@ -58,7 +60,7 @@ public class whiteRoomPiano : ObjectParameter {
 		}
 
 		// The piano is the trigger for setting the player in a "room", while the falling script acts independently
-		if ((int)dCounter == 2) {
+		if (dCounter > 1.9 && dCounter < 2.0) {
 			player.transform.position = new Vector3 (-7, 2, 0);
 			room.SetActive (true);
 			teddys.transform.position = new Vector3 (45, 1, 1);
@@ -73,8 +75,14 @@ public class whiteRoomPiano : ObjectParameter {
 				Rigidbody pianoPartRB = pianoPart.GetComponent <Rigidbody> ();
 				pianoPartRB.isKinematic = false;
 			}
-		} else if (completeIntensity < 11) {
-			//TODO: Sound File?
+		} else if (completeIntensity < 11 && completeIntensity > 9) {
+			if(!pianoBass.isPlaying){
+				pianoBass.Play();
+			}
+		} else if (completeIntensity <= 9) {
+			if(!pianoNorm.isPlaying){
+				pianoNorm.Play();
+			}
 		}
 	}
 }

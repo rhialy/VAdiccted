@@ -19,10 +19,12 @@ public class whiteRoomFalling : ObjectParameter {
 	// Update is called once per frame
 	void Update () {
 
-		if (fCounter > 30) {
-			ground.SetActive(false);
-			foreach (GameObject fallingObject in fallingObjects) {
+		foreach (GameObject fallingObject in fallingObjects) {
+			if (fCounter > 16) {
 				fallingObject.SetActive(true);
+			}
+			if (fCounter > 20) {
+				ground.SetActive(false);
 				Vector3 objectRotation = new Vector3 (20, 0, 0);
 				fallingObject.transform.Rotate (objectRotation);
 				if (sizeChangeIntensity > 10) {
@@ -35,7 +37,7 @@ public class whiteRoomFalling : ObjectParameter {
 			earth.transform.position = new Vector3 (0f, -242f, -130.8f);
 		}
 		fCounter = fCounter + 1 * Time.deltaTime;
-		if (fCounter > 45) {
+		if (fCounter > 36) {
 			Application.LoadLevel(Application.loadedLevel+1);
 		}
 	}

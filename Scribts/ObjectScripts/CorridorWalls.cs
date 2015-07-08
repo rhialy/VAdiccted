@@ -32,9 +32,9 @@ public class CorridorWalls : ObjectParameter {
 			playerController.Heart ();
 		}
 		// Because if initialized in Start(), sometimes the wrong variable is inherited ...
-		if (wallCounter > 0.01) {
+		if (wallCounter > 0.00001) {
 			parameterDependence = (float)movementIntensity / 10000; // dependent on which "route" the user took
-			xMovement = 0.00030f + parameterDependence;		 	   //the walls are moving slower or faster or not at all
+			xMovement = 0.00020f + parameterDependence;		 	   //the walls are moving slower or faster or not at all
 		}
 
 		/**************************

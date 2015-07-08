@@ -14,6 +14,10 @@ public class PlayerController : MonoBehaviour {
 	public float gravity = 20.0f;
 
 	private Vector3 moveDirection = Vector3.zero;
+	public Vector3 setMoveDirection (Vector3 newMoveDirection) {
+		moveDirection = newMoveDirection;
+		return moveDirection;
+	}
 	private CharacterController controller;
 
 	private bool LSD;
@@ -30,9 +34,9 @@ public class PlayerController : MonoBehaviour {
 
 	// Use this for initialization
 	void Start() {
-		//LSD = Main.Parameters[0];
-		//Ecstasy = Main.Parameters[2];
 		controller = GetComponent<CharacterController>();
+		LSD = Main.Parameters[0];
+		Ecstasy = Main.Parameters[2];
 	}
 	
 	// Update is called once per frame
@@ -74,14 +78,13 @@ public class PlayerController : MonoBehaviour {
 
 			}*/
 
-			if (Input.GetButton("Jump"))
+			if (Input.GetButton("Jump")) {
 				moveDirection.y = jumpSpeed;	
-
+			}
 
 		}
-		if (controllable) {
-			controller.Move(moveDirection * Time.deltaTime);
-		}
+
+		controller.Move(moveDirection * Time.deltaTime);
 		moveDirection.y -= gravity * Time.deltaTime;
 
 	}

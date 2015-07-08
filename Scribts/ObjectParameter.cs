@@ -3,14 +3,7 @@ using System.Collections;
 
 public class ObjectParameter : MonoBehaviour {
 
-	/*********HideParentVariablesInInspector*************/
-	// Wir reinitialisieren jetzt alle Variablen der Eltern
-	// Klasse um sie im Inspector zu verstecken
-	// -> Bessere Übersichtlichkeit
-	// TODO: HideInInspector Attribut funktioniert nicht um ein Feld
-	// ein zweites mal zu serializen. Andere Methode?
 
-	
 	/*********************************************************************|
 	| Dieses Script dient als "Handler" für alle kleineren Scripts die    |
 	| mit der Änderung von Objekten zu tun haben. Dies dient nur der      |

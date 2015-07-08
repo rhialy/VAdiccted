@@ -51,12 +51,12 @@ public class Soundbehavior : MonoBehaviour {
 	public void speed(AudioSource source, float Pitch,bool max){
 		if (max == true) {
 			if (source.pitch <= Pitch) {
-				source.pitch += 0.1F;
+				source.pitch += 0.1F * Time.deltaTime;
 
 			}
 		} else {
 			if (source.pitch >= Pitch) {
-				source.pitch-=0.1F;
+				source.pitch-=0.1F * Time.deltaTime;
 			}
 		}
 	}

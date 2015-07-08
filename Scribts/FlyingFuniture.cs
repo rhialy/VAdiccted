@@ -29,7 +29,7 @@ public class FlyingFuniture : MonoBehaviour {
 	private int framerate=150;
 
 
-
+	private int extreme = 3;
 
 	private Vector3 [] vecSize= new Vector3[27];
 	private Vector3[] vec= new Vector3[27];
@@ -53,6 +53,9 @@ public class FlyingFuniture : MonoBehaviour {
 		bodyGood = Main.Parameters[3];
 		soulGood = Main.Parameters[4];
 		thirdQuestion = Main.getThirdQuestion();
+		if (bodyGood == true) {
+			extreme = 4; print (1);
+		}
 	}
 	
 	// Update is called once per frame
@@ -97,8 +100,8 @@ public class FlyingFuniture : MonoBehaviour {
 	//changes the size of the Funiture
 	 private Vector3 FunitureSize(Vector3 V, GameObject g){
 		if (LSD == true || Heroine == true || thirdQuestion==3) {
-		if (c >= 1) {
-			V = new Vector3 (Random.Range (-0.1F, 0.1F), Random.Range (-0.1F, 0.1F), Random.Range (-0.1F, 0.1F));
+		if (c >= extreme) {
+			V = new Vector3 (Random.Range (-0.2F, 0.2F), Random.Range (-0.2F, 0.2F), Random.Range (-0.2F, 0.2F));
 		}
 
 		g.transform.localScale += V;
@@ -115,7 +118,7 @@ public class FlyingFuniture : MonoBehaviour {
 
 		if (LSD==true){
 			if(c>=2F){
-				V=new Vector3 (Random.Range (-0.5F,0.5F),Random.Range (-0.5F,0.5F),Random.Range (-0.5F,0.5F));
+				V=new Vector3 (Random.Range (-0.2F,0.2F),Random.Range (-0.2F,0.2F),Random.Range (-0.2F,0.2F));
 			}
 		if (c>= 4.0F) {
 			c = 0F;
@@ -125,12 +128,11 @@ public class FlyingFuniture : MonoBehaviour {
 		return V;
 	}
 	//lets the Funiture jump a little bit
-	private Vector3 FunitureJumping( Vector3 V,GameObject g){
+	private void FunitureJumping( Vector3 V,GameObject g){
 		
 		if (LSD==true || thirdQuestion==1){
 		g.transform.position += V;	
 		}
-		return V;
 	}
 	//ends the first szene 
 	public void End(){

@@ -149,6 +149,12 @@ public class LightParameter : MonoBehaviour {
 				if (LSD == true) {
 					min += 25.0f;
 				}
+				if(Heroine==true){
+					max-=20.0f;
+				}
+				if(Ecstasy==true){
+					min+=20.0f;
+				}
 				if (bodyGood == true) {
 					min += 5.0f;
 				}
@@ -197,6 +203,8 @@ public class LightParameter : MonoBehaviour {
 			if(Panbhängigkeit==true){
 				//Sets the range of values
 			if (LSD == true) {min+=20.0f;}
+			if(Heroine==true) {min+=10.0f;}
+			if(Ecstasy==true) {min+=15.0f;}
 			if (bodyGood == true) {min +=5.0f;}
 			if (soulGood==true){min+=10.0f;}
 			if (thirdQuestion == 1) {max -=20.0f;}
@@ -245,7 +253,7 @@ public class LightParameter : MonoBehaviour {
 	}
 
 	//a very bright light state
-	public void overcast(bool heller){
+	public void crossfade(bool heller){
 		if (LSD == true || Ecstasy == true) {
 			if (heller == true) {
 				Lt.range = 100.00F;
@@ -256,18 +264,6 @@ public class LightParameter : MonoBehaviour {
 	}
 
 }
-
-/*if (0 < random && random < 20) {i1=0.1f; i2=0.2f;print (1);}
-			if (20 < random && random < 40) {i1=0.5f; i2=1.0f;print (2);}
-			if (40 < random && random < 60) {i1=1.6f; i2=2.0f;print (3);}
-			if (60 < random && random < 80) {i1=4.0f; i2=5.0f;print (4);}
-			if (80 < random && random < 100) {i1=7.0f; i2=7.0f;print (5);}
-
-				//set lightintensity
-				float amplitude=5.3F;
-				float phi = Time.time / duration * 2 * Mathf.PI;
-				amplitude = Mathf.Cos (phi) * i1 + i2;
-				_Lt.intensity = amplitude;*/
 
 
 

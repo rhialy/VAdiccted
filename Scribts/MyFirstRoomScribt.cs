@@ -49,60 +49,70 @@ public class MyFirstRoomScribt : MonoBehaviour {
 		//Timer to activate different functions.
 
 		switch ((int)count) {
-		case 1: lightb.LightState(1);
-			break;
-			case 16:
-		
-				lightb.overcast (true);
-				break;
-			case 31:
-				lightb.overcast (false);
-				break;
-			case 45:
-				Player.Heart ();
+		case 1: 
+			lightb.LightState(1);
+		break;
+		case 8:
+			print ("case 8");
+			lightb.crossfade (true);
+		break;
+		case 16:
+			print ("case 16");
+			lightb.crossfade (false);
+		break;
+		case 22:
+			print ("case 22");
+			Player.Heart ();
 			Funiture.SizeSetActive(26,true);
-				break;
-			case 60:
+		break;
+		case 30:
+			print ("case 30");
 			if(bodyGood==true||soulGood==true){
 				audi.clip=bird;
 				audi.Play ();
 			}
-			break;
-			case 65:
+		break;
+		case 32:
+			print ("case 32");
 			Funiture.JumpSetActive (15,true);
-
-				break;
-			case 66:
+	 	break;
+		case 35:
+			print ("case 35");
 			Funiture.SizeSetActive(0,false);
 			Funiture.JumpSetActive (26,true);
-				lightb.LightState (2);
-				break;
-			case 75:
-				lightb.overcast (true);
-				break;
-			Player.Heart ();
-		case 80:
+			lightb.LightState (2);
+		break;
+		case 37:
+			print ("case 37");
+			lightb.crossfade (true);
+		break;
+		Player.Heart ();
+		case 42:
+			print ("case 42");
 			if(thirdQuestion==3||LSD==true){ 
-			audi.clip=scream;
-			audi.Play ();
+				audi.clip=scream;
+				audi.Play ();
 			}
-			break;
-		case 86:
+		break;
+		case 45:
+			print ("case 45");
 			Funiture.JumpSetActive (0,false);
 			Funiture.FlySetActive (15,true);
 			lightb.LightState (1);
-			break;
-		case 96:
+		break;
+		case 49:
+			print ("case 49");
 			Funiture.FlySetActive (26,true);
-			lightb.overcast (false);
-			break;
-		case 120: //end
+			lightb.crossfade (false);
+		break;
+		case 55: //end
+			print ("case 55");
 			print (count);
 			Funiture.End();
-			break;
-		case 124:
+		break;
+		case 60:
 			Application.LoadLevel(Application.loadedLevel + 1);
-			break;
+		break;
 		}
 	}
 
